@@ -63,7 +63,7 @@ class ScoreRepositoryTest {
         score.setComposer(composer);
         scoreRepository.save(score);
 
-        // тест @Query (JPQL)
+        // тест @Query
         List<Score> result = scoreRepository.findByComposerName(composerName);
         Assertions.assertFalse(result.isEmpty());
         Assertions.assertEquals(composerName, result.getFirst().getComposer().getName());

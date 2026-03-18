@@ -36,7 +36,7 @@ class UserServiceTest {
 
     @Test
     void testDeleteUserWithFavorites() {
-        // создаём партитуру (нужна для Favorite)
+        // создаём партитуру
         Score score = new Score();
         score.setTitle(UUID.randomUUID().toString());
         scoreRepository.save(score);
