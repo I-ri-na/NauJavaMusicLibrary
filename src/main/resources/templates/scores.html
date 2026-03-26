@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список партитур</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        table { border-collapse: collapse; width: 80%; margin-top: 20px; }
+        th, td { border: 1px solid #dddddd; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+<h2>Каталог музыкальных партитур</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название (Title)</th>
+        <th>Сложность (Difficulty)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="score : ${scores}">
+        <td th:text="${score.id}">1</td>
+        <td th:text="${score.title}">Соната</td>
+        <td th:text="${score.difficulty}">Легко</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
