@@ -6,4 +6,5 @@ import ru.Irina.NauJava.entity.User;
 
 @RepositoryRestResource(path = "users")
 public interface UserRepository extends JpaRepository<User, Long> {
+    User findByLogin(String login);
 }
