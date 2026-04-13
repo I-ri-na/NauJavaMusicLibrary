@@ -28,6 +28,7 @@ public class SpringSecurityConfig {
 
                         .requestMatchers("/registration", "/login", "/logout").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").hasRole("ADMIN")
+                        .requestMatchers("/api/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
