@@ -1,6 +1,8 @@
 package ru.Irina.NauJava.service;
 
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 import ru.Irina.NauJava.entity.Report;
 import ru.Irina.NauJava.entity.ReportStatus;
 import ru.Irina.NauJava.entity.User;
@@ -16,11 +18,15 @@ public class ReportService {
     private final ReportRepository reportRepository;
     private final UserRepository userRepository;
 
-    public ReportService(ReportRepository reportRepository, UserRepository userRepository) {
+
+    private final TemplateEngine templateEngine;
+
+
+    public ReportService(ReportRepository reportRepository, UserRepository userRepository, TemplateEngine templateEngine) {
         this.reportRepository = reportRepository;
         this.userRepository = userRepository;
+        this.templateEngine = templateEngine;
     }
-
 
     public Long createReport() {
         Report report = new Report();
@@ -28,7 +34,6 @@ public class ReportService {
         report = reportRepository.save(report);
         return report.getId();
     }
-
 
     public Report getReportById(Long id) {
         return reportRepository.findById(id).orElse(null);
@@ -41,17 +46,14 @@ public class ReportService {
             try {
                 final long[] usersCount = {0};
                 final List<User>[] usersList = new List[]{null};
-
                 final long[] timeUsersCount = {0};
                 final long[] timeUsersList = {0};
-
 
                 Thread thread1 = new Thread(() -> {
                     long startTime = System.currentTimeMillis();
                     usersCount[0] = userRepository.count();
                     timeUsersCount[0] = System.currentTimeMillis() - startTime;
                 });
-
 
                 Thread thread2 = new Thread(() -> {
                     long startTime = System.currentTimeMillis();
@@ -68,23 +70,18 @@ public class ReportService {
                 long totalTime = System.currentTimeMillis() - totalStartTime;
 
 
-                StringBuilder html = new StringBuilder();
-                html.append("<h2>Отчет: Статистика пользователей</h2>");
-                html.append("<table border='1' cellpadding='10' style='border-collapse: collapse;'>");
-                html.append("<tr style='background-color: #f2f2f2;'><th>Метрика</th><th>Значение</th><th>Время выполнения (мс)</th></tr>");
-                html.append("<tr><td>Количество пользователей</td><td>").append(usersCount[0]).append("</td><td>").append(timeUsersCount[0]).append("</td></tr>");
+                Context context = new Context();
+                context.setVariable("usersCount", usersCount[0]);
+                context.setVariable("timeUsersCount", timeUsersCount[0]);
+                context.setVariable("usersList", usersList[0]);
+                context.setVariable("timeUsersList", timeUsersList[0]);
+                context.setVariable("totalTime", totalTime);
 
-                html.append("<tr><td>Список пользователей (логины)</td><td>");
-                for (User u : usersList[0]) {
-                    html.append(u.getLogin()).append("<br>");
-                }
-                html.append("</td><td>").append(timeUsersList[0]).append("</td></tr>");
 
-                html.append("<tr style='background-color: #e6ffe6;'><td colspan='2'><b>Общее время формирования отчета</b></td><td><b>").append(totalTime).append("</b></td></tr>");
-                html.append("</table>");
+                String htmlContent = templateEngine.process("report", context);
 
                 Report report = reportRepository.findById(reportId).orElseThrow();
-                report.setContent(html.toString());
+                report.setContent(htmlContent);
                 report.setStatus(ReportStatus.COMPLETED);
                 reportRepository.save(report);
 

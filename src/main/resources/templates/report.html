@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Отчет: Статистика</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .total-row {
+            background-color: #e6ffe6;
+        }
+    </style>
+</head>
+<body>
+<h2>Отчет: Статистика пользователей</h2>
+
+<table>
+    <tr>
+        <th>Метрика</th>
+        <th>Значение</th>
+        <th>Время выполнения (мс)</th>
+    </tr>
+    <tr>
+        <td>Количество пользователей</td>
+        <td th:text="${usersCount}"></td>
+        <td th:text="${timeUsersCount}"></td>
+    </tr>
+    <tr>
+        <td>Список пользователей (логины)</td>
+        <td>
+                <span th:each="user : ${usersList}">
+                    <span th:text="${user.login}"></span><br>
+                </span>
+        </td>
+        <td th:text="${timeUsersList}"></td>
+    </tr>
+    <tr class="total-row">
+        <td colspan="2"><b>Общее время формирования отчета</b></td>
+        <td><b th:text="${totalTime}"></b></td>
+    </tr>
+</table>
+</body>
+</html>
