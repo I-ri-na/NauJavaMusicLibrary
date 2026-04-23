@@ -13,7 +13,7 @@
 
 ## 🛠 Технологический стек
 * **Backend:** Java 21, Spring Boot 4.0.3, Maven.
-* **Database:** PostgreSQL, Hibernate (Spring Data JPA), Criteria API.
+* **Database:** PostgreSQL, Hibernate (Spring Data JPA).
 * **Security:** Spring Security (RBAC: USER/ADMIN), шифрование паролей через BCryptPasswordEncoder.
 * **Frontend:** Thymeleaf (Server-side rendering).
 * **REST API:** Spring Data REST, Swagger/OpenAPI.
